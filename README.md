@@ -82,28 +82,32 @@ medusa -h 192.168.1.100 -U < users.txt > -P < passwords.txt > -M ssh
 # Inspect file
 file < secret.zip >
 ffmpeg -i adcd.mp4
-| File Type  | Extension(s)                                                                 |
-|------------|-------------------------------------------------------------------------------|
-| Video      | .mp4, .mkv, .avi, .mov, .flv, .webm, .wmv, .mpeg, .3gp, .ts                   |
-| Audio      | .mp3, .aac, .wav, .flac, .ogg, .m4a, .opus, .wma, .amr                        |
-| Streams    | .m3u8, .ts, .rtsp, .rtmp, .http, .udp                                        |
-| Containers | .mp4, .mkv, .avi, .mov, .flv, .webm, .ts, .3gp, .mxf, .mpg                    |
+## 🎞️ File Type & Extension Mapping
+
+| File Type  | Extension(s) |
+|------------|--------------|
+| **Video**  | .mp4, .mkv, .avi, .mov, .flv, .webm, .wmv, .mpeg, .3gp, .ts |
+| **Audio**  | .mp3, .aac, .wav, .flac, .ogg, .m4a, .opus, .wma, .amr |
+| **Streams**| .m3u8, .ts, .rtsp, .rtmp, .http, .udp |
+| **Containers** | .mp4, .mkv, .avi, .mov, .flv, .webm, .ts, .3gp, .mxf, .mpg |
 
 # Cracking ZIP files
 zip2john < secret.zip > > zip.hash
-| Tool         | Supported File Types                          |
-|--------------|-----------------------------------------------|
-| zip2john     | .zip                                          |
-| rar2john     | .rar                                          |
-| 7z2john      | .7z                                           |
-| pdf2john     | .pdf                                          |
-| office2john  | .doc, .docx, .xls, .xlsx, .ppt, .pptx         |
-| rar2john     | .rar (v3, v5)                                 |
-| hccap2john   | .hccap, .hccapx (WPA/WPA2)                    |
-| keepass2john | .kdbx (KeePass DB)                            |
-| dmg2john     | .dmg (macOS disk image)                       |
-| gpg2john     | .gpg, .pgp                                    |
-| zip2john     | .zip, .jar, .apk                              |
+## 🛠️ Cracking File Types with JohnTheRipper
+
+| Tool         | Supported File Types |
+|--------------|----------------------|
+| zip2john     | .zip                 |
+| rar2john     | .rar                 |
+| 7z2john      | .7z                  |
+| pdf2john     | .pdf                 |
+| office2john  | .doc, .docx, .xls, .xlsx, .ppt, .pptx |
+| rar2john     | .rar (v3, v5)        |
+| hccap2john   | .hccap, .hccapx (WPA/WPA2) |
+| keepass2john | .kdbx (KeePass DB)   |
+| dmg2john     | .dmg (macOS disk image) |
+| gpg2john     | .gpg, .PGP           |
+| zip2john     | .zip, .jar, .apk     |
 
 john --wordlist=< rockyou.txt > zip.hash
 ```
