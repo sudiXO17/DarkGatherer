@@ -131,8 +131,6 @@ photon -u "https://www.vulnhub.com/" --wayback --output photon_results
 spiderfoot -s target.com -t DOMAIN_NAME,USERNAME,EMAIL -o csv -q
 ```
 
-## 🔧 Useful GitHub Repositories
-
 ## 🚀 Gits for Privilege Escalation (Pre-ESC) & Payload Crafting
 
 | GitHub Link | Purpose |
