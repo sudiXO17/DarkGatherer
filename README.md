@@ -26,16 +26,16 @@ theHarvester -d example.com -b all
 
 # Subdomain & Directory Discovery
 subfinder -d vulnweb.com -o subfinder_results.txt
-gobuster dir -u http://10.10.109.34 -w directory-list-2.3-medium.txt
+gobuster dir -u http://10.10.109.34 -w < directory-list-2.3-medium.txt >
 
 # Fuzzing with FFUF
-ffuf -u https://FUZZ.example.com -w subdomains.txt -mc 200 -o subdomains.txt
-ffuf -u https://example.com/FUZZ -w directories.txt -mc 200,301 -o directories.txt
-ffuf -u https://example.com/FUZZ -w big.txt -recursion -recursion-depth 3 -o recursive_dirs.txt
-ffuf -u https://example.com/FUZZ -w common.txt -e .php,.html,.js,.txt -o files.txt
-ffuf -u https://example.com -w subdomains.txt -H "Host: FUZZ.example.com" -o waf_bypass.txt
-ffuf -u "https://example.com/index.php?FUZZ=test" -w parameters.txt -mc 200 -o parameters.txt
-ffuf -u "https://example.com/FUZZ" -w common.txt -e .js -o js_files.txt
+ffuf -u https://FUZZ.example.com -w < subdomains.txt > -mc 200 -o subdomains.txt
+ffuf -u https://example.com/FUZZ -w < directories.txt > -mc 200,301 -o directories.txt
+ffuf -u https://example.com/FUZZ -w < directory-list-2.3-medium.txt / common.txt > -recursion -recursion-depth 3 -o recursive_dirs.txt
+ffuf -u https://example.com/FUZZ -w < common.txt > -e .php,.html,.js,.txt -o files.txt
+ffuf -u https://example.com -w < subdomains.txt > -H "Host: FUZZ.example.com" -o waf_bypass.txt
+ffuf -u "https://example.com/index.php?FUZZ=test" -w < parameters.txt > -mc 200 -o parameters.txt
+ffuf -u "https://example.com/FUZZ" -w < common.txt > -e .js -o js_files.txt
 ```
 
 ---
@@ -55,15 +55,14 @@ nikto -h target.com -p 80,443,8080,8443 -C all -Tuning x 6 -output nikto_scan.tx
 wpscan --url https://elementor.com/ --random-user-agent --ignore-main-redirect --max-threads 50 --force
 
 # SQLi & Command Injection
-sqlmap -u http://www.site.com/vuln.php?id=1 --dbs --random-agent --level=5 --risk=3 --batch
-commix -u "http://www.site.com/vuln.php?id=1" --random-agent --level=3 technique= C, T, E, F --batch --all
+sqlmap -u http://<target>/vuln.php?id=1 --dbs --random-agent --level=5 --risk=3 --batch
+commix -u "http://<target>/vuln.php?id=1" --random-agent --level=3 technique= C, T, E, F --batch --all
 
 # Nmap with Vuln Scripts
 nmap -sV --script=vulscan/vulscan.nse www.example.com
+  --- from github repo https://github.com/scipag/vulscan
 nmap -p 80,443,8080,8443 --script=http-vuln*,http-wordpress-enum,http-joomla-brute,http-sql-injection,http-xssed,http-brute,ssl-enum-ciphers,ssl-cert,ssl-heartbleed,http-title,http-server-header,http-fileupload-exploiter,http-open-redirect,http-waf-detect,http-waf-fingerprint -T4 -A -v target.com
 
-# HTTP Stress Testing
-python3 goldeneye.py http://testphp.vulnweb.com -w 10 -s 200 -m get
 ```
 
 ---
@@ -73,27 +72,50 @@ python3 goldeneye.py http://testphp.vulnweb.com -w 10 -s 200 -m get
 ```bash
 # John the Ripper
 john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt
-john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt ntlm_hashes.txt
+john --format=< hash algorithm if u know > --wordlist=/usr/share/wordlists/rockyou.txt ntlm_hashes.txt
 
 # Hashcat
-hashcat -m 1400 -a 0 hash.txt rockyou.txt
-hashcat -m 13600 -a 0 zip.hash rockyou.txt
+hashcat -m 1400 -a 0 hash.txt < rockyou.txt >
+hashcat -m 13600 -a 0 zip.hash < rockyou.txt >
 
 # Hash Identification
 hashid hash.txt
 
 # Brute Forcing - Hydra
-hydra -L users.txt -P passwords.txt 192.168.1.100 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=Invalid login"
-hydra -L users.txt -P passwords.txt <protocol>://<target> [options]
+hydra -L < users.txt > -P < passwords.txt > 192.168.1.100 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=< Invalid login attempt message >"
+hydra -L < users.txt > -P < passwords.txt > <protocol>://<target> [options]
 
 # Brute Forcing - Medusa
-medusa -h 192.168.1.100 -U users.txt -P passwords.txt -M ssh
+medusa -h 192.168.1.100 -U < users.txt > -P < passwords.txt > -M ssh
+
+# Inspect file
+file < secret.zip >
+ffmpeg -i adcd.mp4
+  ---
+  File Type	  Extension(s)
+  Video	      .mp4, .mkv, .avi, .mov, .flv, .webm, .wmv, .mpeg, .3gp, .ts
+  Audio	      .mp3, .aac, .wav, .flac, .ogg, .m4a, .opus, .wma, .amr
+  Streams	    .m3u8, .ts, .rtsp, .rtmp, .http, .udp
+  Containers	.mp4, .mkv, .avi, .mov, .flv, .webm, .ts, .3gp, .mxf, .mpg
+  ---
 
 # Cracking ZIP files
-ffmpeg -i adcd.mp4       # Check video format
-file secret.zip          # Inspect file
-zip2john secret.zip > zip.hash
-john --wordlist=rockyou.txt zip.hash
+zip2john < secret.zip > > zip.hash
+  ---
+  Tool	        Supported File Types
+  zip2john	    .zip
+  rar2john	    .rar
+  7z2john	      .7z
+  pdf2john	    .pdf
+  office2john	  .doc, .docx, .xls, .xlsx, .ppt, .pptx
+  rar2john	    .rar (v3, v5)
+  hccap2john	  .hccap, .hccapx (WPA/WPA2)
+  keepass2john	.kdbx (KeePass DB)
+  dmg2john	    .dmg (macOS disk image)
+  gpg2john	    .gpg, .pgp
+  zip2john	    .zip, .jar, .apk
+  ---
+john --wordlist=< rockyou.txt > zip.hash
 ```
 
 ---
@@ -114,6 +136,18 @@ photon -u "https://www.vulnhub.com/" --wayback --output photon_results
 # Recon Framework
 spiderfoot -s target.com -t DOMAIN_NAME,USERNAME,EMAIL -o csv -q
 ```
+
+## 🔧 Useful GitHub Repositories
+
+## 🚀 Gits for Privilege Escalation (Pre-ESC) & Payload Crafting
+
+| GitHub Link | Purpose |
+|-------------|---------|
+| [AK47 PHP Shell](https://github.com/backdoorhub/shell-backdoor-list/blob/master/shell/php/ak47shell.php) | PHP web shell for post-exploitation (command execution, file management, etc.) |
+| [PentestMonkey PHP Reverse Shell](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php) | Common PHP reverse shell for remote access on vulnerable servers |
+| [DKMC](https://github.com/Mr-Un1k0d3r/DKMC) | Payload obfuscation tool to bypass antivirus using C# & PowerShell |
+| [TheFatRat](https://github.com/screetsec/TheFatRat) | Creates FUD backdoors & payloads with integration to Metasploit |
+| [XERXES](https://github.com/XCHADXFAQ77X/XERXES) | High-speed DoS tool for stress testing websites (Layer 7) |
 
 ---
 
