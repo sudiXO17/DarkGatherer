@@ -131,18 +131,6 @@ photon -u "https://www.vulnhub.com/" --wayback --output photon_results
 spiderfoot -s target.com -t DOMAIN_NAME,USERNAME,EMAIL -o csv -q
 ```
 
-## 🚀 Gits for Privilege Escalation (Pre-ESC) & Payload Crafting
-
-| GitHub Link | Purpose |
-|-------------|---------|
-| [AK47 PHP Shell](https://github.com/backdoorhub/shell-backdoor-list/blob/master/shell/php/ak47shell.php) | PHP web shell for post-exploitation (command execution, file management, etc.) |
-| [PentestMonkey PHP Reverse Shell](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php) | Common PHP reverse shell for remote access on vulnerable servers |
-| [DKMC](https://github.com/Mr-Un1k0d3r/DKMC) | Payload obfuscation tool to bypass antivirus using C# & PowerShell |
-| [TheFatRat](https://github.com/screetsec/TheFatRat) | Creates FUD backdoors & payloads with integration to Metasploit |
-| [XERXES](https://github.com/XCHADXFAQ77X/XERXES) | High-speed DoS tool for stress testing websites (Layer 7) |
-
----
-
 ## 📁 Contributing
 
 Feel free to submit pull requests to add more commands, tools, or improvements! Let's make this the go-to repository for red teamers, CTF players, and OSINT hunters.
